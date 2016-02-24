@@ -1,0 +1,90 @@
+
+<section class="section--center mdl-grid">
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">attach_money</i>
+      &nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">How to Pay</h2>
+    </div>
+
+    <div class="mdl-card__supporting-text">
+      <ol style="font-size: 1.25em;">
+        <li>Choose one of the options below</li><br/>
+        <li>
+          Send&nbsp;
+          <strong>$0</strong>,&nbsp;
+          <strong>$5</strong>,&nbsp;or&nbsp;
+          <strong>$10</strong>&nbsp;
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Venmo -->
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">attach_money</i>
+      &nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">Venmo</h2>
+    </div>
+
+    <div class="mdl-card__supporting-text">
+      <ol style="font-size: 1.25em;">
+        <li>
+          <a target="_blank" href="https://venmo.com/" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">
+            Click Here
+          </a>
+        </li>
+        <br/>
+        <% venmo_name = "(207) 656-2114" %>
+        <li>Send to &nbsp;<em><%= venmo_name %></em></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- PayPal -->
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">attach_money</i>
+      &nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">PayPal</h2>
+    </div>
+
+    <div class="mdl-card__supporting-text">
+      <ol style="font-size: 1.25em;">
+        <li>Make sure you are logged-in to your PayPal account in a different tab!</li>
+        <br/>
+        <li>
+          <% paypal_email = "adam.bertulli@gmail.com" %>
+          <a target="_blank" href="https://www.paypal.com/us/sendmoney?amount=10.00&email=<%= paypal_email %>&payment_type=FriendsFamily" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">
+            Click Here
+          </a>
+        </li>
+        <br/>
+        <li>Choose&nbsp;<em>I'm sending money to family or friends</em></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Google Wallet -->
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">attach_money</i>
+      &nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">Google Wallet</h2>
+    </div>
+
+    <div class="mdl-card__supporting-text">
+      <ol style="font-size: 1.25em;">
+        <li>
+          <a target="_blank" href="https://wallet.google.com/manage/#sendMoney:" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">
+            Click Here
+          </a>
+        </li>
+        <br/>
+        <% gwallet_email = "adam.bertulli@gmail.com" %>
+        <li>Send to &nbsp;<em><%= gwallet_email %></em></li>
+      </ol>
+    </div>
+  </div>
+</section>

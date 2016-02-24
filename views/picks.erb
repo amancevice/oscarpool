@@ -1,0 +1,293 @@
+<script>
+  function pick(optionId) {
+    $.ajax({
+      url: "/update/pick",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'optionId' : optionId },
+      success: pickCallback
+    });
+  }
+
+  function doubleDown(categoryId) {
+    $.ajax({
+      url: "/update/gild",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'categoryId' : categoryId },
+      success: doubleDownCallback
+    });
+  }
+
+  function submit() {
+    $.ajax({
+      url: "/submit",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      data: {},
+      success: submitCallback
+    });
+  }
+
+  function pickCallback(json) {
+    // Mark as picked
+    $("#option-"+json["newOptionId"]).addClass("mdl-color--accent");
+    $("#option-"+json["newOptionId"]).addClass("mdl-color-text--accent-contrast");
+    $("#option-"+json["newOptionId"]).removeClass("mdl-color--primary");
+    $("#option-"+json["newOptionId"]).removeClass("mdl-color-text--primary-contrast");
+    $("#option-"+json["oldOptionId"]).addClass("mdl-color--primary");
+    $("#option-"+json["oldOptionId"]).addClass("mdl-color-text--primary-contrast");
+    $("#option-"+json["oldOptionId"]).removeClass("mdl-color--accent");
+    $("#option-"+json["oldOptionId"]).removeClass("mdl-color-text--accent-contrast");
+
+    // Mark double-down button as picked or disable if no new pick
+    if (json["newOptionId"]) {
+      $("#double-down-"+json["categoryId"]).addClass("picked");
+    } else {
+      $("#double-down-"+json["categoryId"]).removeClass("picked");
+      $("#double-down-"+json["categoryId"]).attr("disabled", true);
+    }
+
+    // Undo any previous double-downs
+    $(".bonus-"+json["categoryId"]).addClass("hidden");
+    $(".points-"+json["categoryId"]).removeClass("hidden");
+
+    // Modify madge count
+    $(".double-down-badge").attr("data-badge", json["badgeCount"]);
+
+    // Enable double-down buttons where pick is made
+    if (json["badgeCount"] > 0) {
+      $(".double-down.picked").attr("disabled", false);
+    }
+
+    // Show submit button if all picks made
+    if (json["submitable"] == true) {
+      $("#submit-button").attr("disabled", false);
+      $("#submit-button").addClass("mdl-color--primary");
+    } else {
+      $("#submit-button").attr("disabled", true);
+      $("#submit-button").removeClass("mdl-color--primary");
+    }
+  }
+
+  function doubleDownCallback(json) {
+    // Mark pick as doubled-down
+    $("#option-"+json["optionId"]).removeClass("mdl-color--primary");
+    $("#option-"+json["optionId"]).removeClass("mdl-color-text--primary-contrast");
+    $("#option-"+json["optionId"]).addClass("mdl-color--accent");
+    $("#option-"+json["optionId"]).addClass("mdl-color-text--accent-contrast");
+
+    // Mark double-down button as doubled
+    $("#double-down-"+json["categoryId"]).removeClass("picked");
+    $("#double-down-"+json["categoryId"]).addClass("doubled");
+
+    // Change points
+    $("#points-"+json["optionId"]).addClass("hidden");
+    $("#bonus-"+json["optionId"]).removeClass("hidden");
+
+    // Disable double-down button
+    $("#double-down-"+json["categoryId"]).attr("disabled", true);
+
+    // Modify badge count
+    $(".double-down-badge").attr("data-badge", json["badgeCount"]);
+
+    // Disable double-down buttons if badge count < 0
+    if (json["badgeCount"] <= 0) {
+      $(".double-down").attr("disabled", true);
+    }
+  }
+
+  function submitCallback(json) {
+    // Move to #picks tab
+    if (json["redirect"]) {
+      $('a.mdl-layout__tab').removeClass('is-active');
+      $('a[href="'+json["redirect"]+'"]').addClass('is-active');
+      $('.mdl-layout__tab-panel').removeClass('is-active');
+      $(json["redirect"]).addClass('is-active');
+
+      // Disable & hide submit button
+      $("#submit-button").attr("disabled", true);
+      $("#submit-button").addClass("hidden");
+
+      // Show leaderboard
+      $("#leaderboard").removeClass("hidden");
+
+      // Scroll to top of page
+      $(".mdl-layout__content").animate({ scrollTop: $(".page-content").height() }, "fast");
+    }
+  }
+</script>
+
+<% leaderboard = 'hidden' unless @user.locked? %>
+<section id="leaderboard" class="section--center mdl-grid <%= leaderboard %>">
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <!-- Leaderboard -->
+    <div class="mdl-card__title mdl-color--accent mdl-color-text--accent-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--accent-contrast">format_list_numbered</i>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">Leaderboard</h2>
+    </div>
+
+    <!-- Players -->
+    <div class="mdl-card__supporting-text" style="padding-bottom: 10px;">
+      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width: 50%; margin: 0 auto;">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th>Score</th>
+            <th>Max Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rank = 0 %>
+          <% Pooler::User.all.sort_by{|x| [x.score, x.username] }.each do |usr| %>
+            <tr>
+              <% rank += 1%>
+              <td><%= rank %></td>
+              <td class="mdl-data-table__cell--non-numeric mdl-color-text--primary--accent">
+                <% if @user == usr %>
+                  <strong><%= usr.username %></strong>
+                <% else %>
+                  <%= usr.username %>
+                <% end%>
+              </td>
+              <td><%= usr.score %></td>
+              <td><%= usr.max_score %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<% instructions = 'hidden' if @user.picks.any? %>
+<section id="instructions" class="section--center mdl-grid <%= instructions %>">
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <!-- Instructions -->
+    <div class="mdl-card__title mdl-color--accent mdl-color-text--accent-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--accent-contrast">help_outline</i>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">Instructions</h2>
+    </div>
+
+    <div class="mdl-card__supporting-text">
+      <ul class="mdl-list">
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon mdl-color-text--accent">lens</i>
+            Choose a nominee for each category
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon mdl-color-text--accent">lens</i>
+            Nominees are worth more if they are less likely to win
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon mdl-color-text--accent">lens</i>
+            Double down on up to 5 nominees to raise the stakes
+          </span>
+        </li>
+        <li class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon mdl-color-text--accent">lens</i>
+            Submit your picks when finished!
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section--center mdl-grid">
+  <% Pooler::Category.all.each do |category| %>
+    <% pick = @user.picks.find_by category:category %>
+
+    <!-- Category Card -->
+    <div id="category-<%= category.id %>" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+
+      <!-- Category name -->
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+        <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">local_activity</i>
+        <!--<i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">camera_roll</i>-->
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <h2 class="mdl-card__title-text"><%= category.name %></h2>
+      </div>
+
+      <!-- Category options -->
+      <div class="mdl-card__supporting-text">
+        <ul class="mdl-list">
+          <% category.options.each do |option| %>
+
+            <!-- Option -->
+            <% doubled = pick&.option == option && pick&.bonus %>
+            <% klass = pick&.option == option ?
+                "mdl-color--accent mdl-color-text--accent-contrast" :
+                "mdl-color--primary mdl-color-text--primary-contrast" %>
+            <li id="option-<%= option.id %>" onclick="pick(<%= option.id %>);" class="mdl-list__item mdl-shadow--4dp pick <%= klass %>">
+
+              <!-- Checkmark -->
+              <% check_hidden = 'hidden' unless option.correct? %>
+              <i id="check-<%= option.id %>" class="material-icons <%= check_hidden %>">check</i>
+
+              <!-- Nominee -->
+              <% if option.subtitle %>
+                <span class="mdl-list__item-primary-content">
+                  <%= option.name %>
+                  <em style="font-size: 0.75em;">&nbsp;&nbsp;&nbsp;<%= option.subtitle %></em>
+                </span>
+              <% else %>
+                <span class="mdl-list__item-primary-content"><%= option.name %></span>
+              <% end %>
+
+              <!-- Points -->
+              <% points_hidden = 'hidden' if pick&.option == option && pick&.bonus%>
+              <% bonus_hidden = 'hidden' if pick&.option != option || pick&.bonus.nil? %>
+              <span id="points-<%= option.id %>" class="points-<%= category.id %> <%= points_hidden %>" style="font-size: 0.8em;">+<%= option.points %></span>
+              <span id="bonus-<%= option.id %>" class="bonus-<%= category.id %> <%= bonus_hidden %>" style="font-size: 0.8em;">+<%= option.points*2 %>/-<%= option.points %></span>
+            </li>
+          <% end %>
+        </ul>
+
+        <!-- Double down badge -->
+        <% badge_count = 5 - @user.picks.select{|x| x.bonus }.count %>
+        <span class="double-down-badge mdl-badge mdl-badge--overlap" data-badge="<%= badge_count %>">
+
+          <!-- Double down button -->
+          <% enabled = badge_count > 0 && pick && pick.bonus.nil? && !@user.locked? %>
+          <% klass = "double-down #{'picked' unless pick.nil? || pick.bonus} #{'doubled' if pick&.bonus}" %>
+          <span id="double-down-<%= category.id %>" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect <%= klass %>" <%= 'disabled' unless enabled %> onclick="doubleDown(<%= category.id %>);">
+            Double Down!
+          </span>
+        </span>
+
+        <!-- Category points -->
+        <% score = pick&.points == 0 ? nil : pick&.points %>
+        <% sign = '+' if score && score > 0  %>
+        <% score_hidden = 'hidden' unless score && @user.locked? && category.options.collect(&:correct?).any? %>
+        <span style="float: right;" class="<%= score_hidden %> mdl-badge" data-badge="<%= sign %><%= score %>"></span>
+      </div>
+    </div>
+  <% end %>
+</section>
+
+<!-- Submit button -->
+<% disabled = 'disabled' if @user.picks.count != Pooler::Category.count %>
+<% submit_hidden = 'hidden' if @user.locked? %>
+<div id="submit-button" onclick="submit();" class="<%= submit_hidden %> floating-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color-text--primary-contrast <%= 'mdl-color--primary' unless disabled %>" <%= disabled %>>
+  Submit
+</div>
+
+<!-- Score button -->
+<% score = @user.score %>
+<% word  = score.abs == 1 ? 'Point' : 'Points' %>
+<% float_score_hidden = 'hidden' unless @user.locked? %>
+<div id="submit-button" class="<%= float_score_hidden %> floating-button mdl-button mdl-button--raised mdl-color-text--accent-contrast mdl-color--accent">
+  <%= score %> <%= word %>
+</div>

@@ -1,0 +1,294 @@
+Original Score:
+  - name   : Bridge of Spies
+    points : 5
+  - name   : Carol
+    points : 5
+  - name   : The Hateful Eight
+    points : 3
+  - name   : Sicario
+    points : 5
+  - name   : "Star Wars: The Force Awakens"
+    points : 3
+Original Song:
+  - name     : Til It Happens To You
+    subtitle : The Hunting Ground
+    points   : 1
+  - name     : Earned It
+    subtitle : Fifty Shades of Grey
+    points   : 3
+  - name     : Manta Ray
+    subtitle : Racing Extinction
+    points   : 5
+  - name     : Writings on the Wall
+    subtitle : Spectre
+    points   : 1
+  - name     : "Simple Song #3"
+    subtitle : Youth
+    points   : 3
+Visual Effects:
+  - name   : Ex Machina
+    points : 5
+  - name   : "Mad Max: Fury Road"
+    points : 5
+  - name   : The Martian
+    points : 3
+  - name   : The Revenant
+    points : 5
+  - name   : "Star Wars: The Force Awakens"
+    points : 3
+Sound Editing:
+  - name   : "Mad Max: Fury Road"
+    points : 1
+  - name   : The Martian
+    points : 3
+  - name   : The Revenant
+    points : 1
+  - name   : Sicario
+    points : 5
+  - name   : "Star Wars: The Force Awakens"
+    points : 3
+Sound Mixing:
+  - name   : Bridge of Spies
+    points : 5
+  - name   : "Mad Max: Fury Road"
+    points : 1
+  - name   : The Martian
+    points : 3
+  - name   : The Revenant
+    points : 1
+  - name   : "Star Wars: The Force Awakens"
+    points : 3
+Documentary Short:
+  - name   : Body Team 12
+    points : 1
+  - name   : Chau, Beyond the Lines
+    points : 3
+  - name   : "Claude Lanzmann: Spectres of the Shoah"
+    points : 1
+  - name   : "A Girl in the River: The Price of Forgiveness"
+    points : 3
+  - name   : Last Day of Freedom
+    points : 3
+Live Action Short:
+  - name   : Ave Maria
+    points : 1
+  - name   : Day One
+    points : 5
+  - name   : Everything Will Be Okay
+    points : 5
+  - name   : Shok
+    points : 3
+  - name   : Stutterer
+    points : 3
+Animated Short:
+  - name   : Bear Story (Historia de Un Oso)
+    points : 3
+  - name   : Prologue
+    points : 5
+  - name   : Sanjay's Super Team
+    points : 1
+  - name   : We Can't Live Without Cosmos
+    points : 5
+  - name   : World of Tomorrow
+    points : 1
+Costume Design:
+  - name   : Cinderella
+    points : 3
+  - name   : Carol
+    points : 3
+  - name   : The Danish Girl
+    points : 5
+  - name   : The Revenant
+    points : 5
+  - name   : "Mad Max: Fury Road"
+    points : 3
+Production Design:
+  - name   : "Mad Max: Fury Road"
+    points : 1
+  - name   : The Danish Girl
+    points : 3
+  - name   : Bridge of Spies
+    points : 3
+  - name   : The Revenant
+    points : 3
+  - name   : The Martian
+    points : 3
+Editing:
+  - name   : "Mad Max: Fury Road"
+    points : 1
+  - name   : The Revenant
+    points : 3
+  - name   : Spotlight
+    points : 3
+  - name   : The Big Short
+    points : 1
+  - name   : "Star Wars: The Force Awakens"
+    points : 5
+Cinematography:
+  - name   : Carol
+    points : 5
+  - name   : The Hateful Eight
+    points : 5
+  - name   : "Mad Max: Fury Road"
+    points : 3
+  - name   : The Revenant
+    points : 1
+  - name   : Sicario
+    points : 5
+Documentary Feature:
+  - name   : Amy
+    points : 1
+  - name   : Cartel Land
+    points : 1
+  - name   : The Look of Silence
+    points : 3
+  - name   : What Happened, Miss Simone?
+    points : 5
+  - name   : Winter on Fire
+    points : 5
+Animated Feature:
+  - name   : Anomalisa
+    points : 3
+  - name   : Boy and the World
+    points : 5
+  - name   : Inside Out
+    points : 1
+  - name   : Shaun the Sheep Movie
+    points : 5
+  - name   : When Marnie Was There
+    points : 5
+Foreign Language Film:
+  - name     : Embrace the Serpent
+    subtitle : Columbia
+    points   : 5
+  - name     : Mustang
+    subtitle : France
+    points   : 3
+  - name     : Son of Saul
+    subtitle : Hungary
+    points   : 1
+  - name     : Theeb
+    subtitle : Jordan
+    points   : 5
+  - name     : A War
+    subtitle : Denmark
+    points   : 5
+Adapted Screenplay:
+  - name   : The Big Short
+    points : 1
+  - name   : Brooklyn
+    points : 5
+  - name   : Carol
+    points : 5
+  - name   : The Martian
+    points : 5
+  - name   : Room
+    points : 3
+Original Screenplay:
+  - name   : Bridge of Spies
+    points : 5
+  - name   : Ex Machina
+    points : 5
+  - name   : Inside Out
+    points : 3
+  - name   : Spotlight
+    points : 1
+  - name   : Straight Outta Compton
+    points : 5
+Supporting Actress:
+  - name     : Jennifer Jason Leigh
+    subtitle : The Hateful Eight
+    points   : 3
+  - name     : Rooney Mara
+    subtitle : Carol
+    points   : 1
+  - name     : Rachel McAdams
+    subtitle : Spotlight
+    points   : 5
+  - name     : Alicia Vikander
+    subtitle : The Danish Girl
+    points   : 1
+  - name     : Kate Winslet
+    subtitle : Steve Jobs
+    points   : 1
+Supporting Actor:
+  - name     : Christian Bale
+    subtitle : The Big Short
+    points   : 5
+  - name     : Tom Hardy
+    subtitle : The Revenant
+    points   : 5
+  - name     : Mark Ruffalo
+    subtitle : Spotlight
+    points   : 5
+  - name     : Mark Rylance
+    subtitle : Bridge of Spies
+    points   : 3
+  - name     : Sylvester Stallone
+    subtitle : Creed
+    points   : 3
+Actress:
+  - name     : Cate Blanchett
+    subtitle : Carol
+    points   : 3
+  - name     : Brie Larson
+    subtitle : Room
+    points   : 1
+  - name     : Jennifer Lawrence
+    subtitle : Joy
+    points   : 3
+  - name     : Charlotte Rampling
+    subtitle : 45 Years
+    points   : 5
+  - name     : Sapirse Ronan
+    subtitle : Brooklyn
+    points   : 3
+Actor:
+  - name     : Bryan Cranston
+    subtitle : Trumbo
+    points   : 5
+  - name     : Matt Damon
+    subtitle : The Martian
+    points   : 5
+  - name     : Leonardo DiCaprio
+    subtitle : The Revenant
+    points   : 1
+  - name     : Michael Fassbender
+    subtitle : Steve Jobs
+    points   : 3
+  - name     : Eddie Redmayne
+    subtitle : The Danish Girl
+    points   : 3
+Director:
+  - name     : Lenny Abrahamson
+    subtitle : Room
+    points   : 5
+  - name     : Alejandro G. Iñàrritu
+    subtitle : The Revenant
+    points   : 3
+  - name     : Adam McKay
+    subtitle : The Big Short
+    points   : 5
+  - name     : Tom McCarthy
+    subtitle : Spotlight
+    points   : 5
+  - name     : George Miller
+    subtitle : "Mad Max: Fury Road"
+    points   : 3
+Best Picture:
+  - name   : The Big Short
+    points : 3
+  - name   : Bridge of Spies
+    points : 5
+  - name   : Brooklyn
+    points : 5
+  - name   : "Mad Max: Fury Road"
+    points : 5
+  - name   : The Martian
+    points : 5
+  - name   : The Revenant
+    points : 1
+  - name   : Room
+    points : 5
+  - name   : Spotlight
+    points : 1

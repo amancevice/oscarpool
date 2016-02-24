@@ -1,0 +1,30 @@
+<section class="section--center mdl-grid">
+  <!-- Login -->
+  <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+    <div class="mdl-card__supporting-text" style="padding: 10px;">
+      <h4>Sign in</h4>
+      <form action="/login" method="post">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="email" name="email" autocomplete="email" id="email">
+          <label class="mdl-textfield__label" for="email">email</label>
+        </div>
+        <br/>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" name="password" autocomplete="password" id="password">
+          <label class="mdl-textfield__label" for="password">password</label>
+        </div>
+        <br/>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+          Submit
+        </button>
+        <br/><br/>
+        <a href="/signup" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Sign up
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <!-- How to play -->
+  <%= erb :howtoplay %>
+</section>

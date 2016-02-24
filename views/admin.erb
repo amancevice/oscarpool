@@ -1,0 +1,167 @@
+<script>
+  function winner(optionId) {
+    $.ajax({
+      url: "/admin/winner",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'optionId' : optionId },
+      success: winnerCallback
+    });
+  }
+
+  function pay(userId) {
+    $.ajax({
+      url: "/admin/payment",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'userId' : userId },
+      success: payCallback
+    });
+  }
+
+  function admin(userId) {
+    $.ajax({
+      url: "/admin/promote",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'userId' : userId },
+      success: adminCallback
+    });
+  }
+
+  function winnerCallback(json) {
+    // Mark as won
+    $("#admin-option-"+json["newOptionId"]).addClass("mdl-color--accent");
+    $("#admin-option-"+json["newOptionId"]).addClass("mdl-color-text--accent-contrast");
+    $("#admin-option-"+json["newOptionId"]).removeClass("mdl-color--primary");
+    $("#admin-option-"+json["newOptionId"]).removeClass("mdl-color-text--primary-contrast");
+    $("#admin-option-"+json["oldOptionId"]).addClass("mdl-color--primary");
+    $("#admin-option-"+json["oldOptionId"]).addClass("mdl-color-text--primary-contrast");
+    $("#admin-option-"+json["oldOptionId"]).removeClass("mdl-color--accent");
+    $("#admin-option-"+json["oldOptionId"]).removeClass("mdl-color-text--accent-contrast");
+
+    // Move check
+    $("#admin-check-"+json["oldOptionId"]).addClass("hidden");
+    $("#admin-check-"+json["newOptionId"]).removeClass("hidden");
+    $("#check-"+json["oldOptionId"]).addClass("hidden");
+    $("#check-"+json["newOptionId"]).removeClass("hidden");
+  }
+
+  function payCallback(json) {
+    $("input#paid-"+json["unpaidId"]).attr("checked", false);
+    $("input#paid-"+json["paidId"]).attr("checked", true);
+  }
+
+  function adminCallback(json) {
+    $("input#admin-"+json["unadminId"]).attr("checked", false);
+    $("input#admin-"+json["adminId"]).attr("checked", true);
+  }
+</script>
+
+<section class="section--center mdl-grid">
+  <!-- User Card -->
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+
+    <!-- User name -->
+    <div class="mdl-card__title mdl-color--accent mdl-color-text--accent-contrast">
+      <i class="material-icons mdl-list__item-icon mdl-color-text--accent-contrast">group</i>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <h2 class="mdl-card__title-text">Players</h2>
+    </div>
+
+    <!-- Category options -->
+    <div class="mdl-card__supporting-text" style="overflow: scroll;">
+      <table id="payments" class="mdl-data-table mdl-js-data-table" style="width: 50%; margin: 0 auto;">
+        <thead>
+          <tr>
+            <th class="mdl-data-table__cell--non-numeric">player</th>
+            <th class="mdl-data-table__cell--non-numeric">email</th>
+            <th class="mdl-data-table__cell--non-numeric">paid?</th>
+            <th class="mdl-data-table__cell--non-numeric">locked?</th>
+            <th class="mdl-data-table__cell--non-numeric">admin?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Pooler::User.all.sort{|a,b| a.username<=>b.username }.each do |usr| %>
+            <% paid = 'checked' if usr.paid? %>
+            <% admin = 'checked' if usr.admin == true %>
+            <% submitted = 'checked' if usr.locked? %>
+            <tr id="<%= usr.id %>">
+              <td class="mdl-data-table__cell--non-numeric"><%= usr.username %></td>
+              <td class="mdl-data-table__cell--non-numeric"><%= usr.email %></td>
+
+              <!-- Paid? -->
+              <td>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                  <input id="paid-<%= usr.id %>" onclick="pay(<%= usr.id %>);" type="checkbox" class="mdl-checkbox__input" <%= paid %>>
+                </label>
+              </td>
+
+              <!-- Submitted? -->
+              <td>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                  <input id="locked-<%= usr.id %>" onclick="lock(<%= usr.id %>);" type="checkbox" class="mdl-checkbox__input" <%= admin %> disabled>
+                </label>
+              </td>
+
+              <!-- Admin? -->
+              <td>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                  <input id="admin-<%= usr.id %>" onclick="admin(<%= usr.id %>);" type="checkbox" class="mdl-checkbox__input" <%= admin %>>
+                </label>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section--center mdl-grid">
+  <% Pooler::Category.all.each do |category| %>
+    <!-- Category Card -->
+    <div id="admin-category-<%= category.id %>" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+
+      <!-- Category name -->
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--primary-contrast">
+        <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">local_activity</i>
+        <!--<i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">camera_roll</i>-->
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <h2 class="mdl-card__title-text"><%= category.name %></h2>
+      </div>
+
+      <!-- Category options -->
+      <div class="mdl-card__supporting-text">
+        <ul class="mdl-list">
+          <% category.options.each do |option| %>
+
+            <!-- Option -->
+            <% klass = option.correct? ?
+                "mdl-color--accent mdl-color-text--accent-contrast" :
+                "mdl-color--primary mdl-color-text--primary-contrast" %>
+            <li id="admin-option-<%= option.id %>" onclick="winner(<%= option.id %>);" class="mdl-list__item mdl-shadow--4dp pick <%= klass %>">
+
+              <!-- Checkmark -->
+              <% check_hidden = 'hidden' unless option.correct? %>
+              <i id="admin-check-<%= option.id %>" class="material-icons <%= check_hidden %>">check</i>
+
+              <!-- Nominee -->
+              <% if option.subtitle %>
+                <span class="mdl-list__item-primary-content">
+                  <%= option.name %>
+                  <em style="font-size: 0.75em;">&nbsp;&nbsp;&nbsp;<%= option.subtitle %></em>
+                </span>
+              <% else %>
+                <span class="mdl-list__item-primary-content"><%= option.name %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</section>

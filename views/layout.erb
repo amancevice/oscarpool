@@ -1,0 +1,114 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#455A64">
+    <title><%= Application.title %></title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.blue_grey-green.min.css" />
+    <%= stylesheet_tag 'styles' %>
+  </head>
+
+  <body class="mdl-oscars mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <!-- Main content -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+      <!-- Header -->
+      <header class="mdl-layout__header mdl-layout__header--fixed mdl-color--primary">
+        <!-- Title -->
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+          <i class="material-icons mdl-list__item-icon mdl-color-text--primary-contrast">local_activity</i>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <h3><%= Application.title %></h3>
+        </div>
+        <!-- End title -->
+
+        <!-- Navigation -->
+        <% unless @user.nil? %>
+          <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+            <% if @user&.admin? %>
+              <a href="#admin" onclick="changeTab('#admin');" class="mdl-layout__tab">Admin</a>
+            <% end %>
+            <a href="#picks" onclick="changeTab('#picks');" class="mdl-layout__tab">Picks</a>
+            <a href="#pay" onclick="changeTab('#pay');" class="mdl-layout__tab">Pay</a>
+            <a href="#logout" onclick="changeTab('/logout');" class="mdl-layout__tab">Log Out</a>
+          </div>
+        <% end %>
+        <!-- End navigation -->
+      </header>
+      <!-- End navigation -->
+
+      <!-- Content -->
+      <main class="mdl-layout__content">
+
+        <%= styled_flash %>
+        <%= yield %>
+
+        <!-- Instructions -->
+        <%= erb :instructions %>
+
+        <!-- Footer -->
+        <footer class="mdl-mini-footer">
+          <div class="mdl-mini-footer__left-section">
+            <div class="mdl-logo">Oscar Pool 2016</div>
+            <ul class="mdl-mini-footer__link-list">
+              <li><a href="mailto:amancevice@cargometrics.com">Help</a></li>
+            </ul>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script src="https://code.getmdl.io/1.1.1/material.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>
+      var tab = $(location).attr('hash') || "#picks";
+      $('a.mdl-layout__tab').removeClass('is-active');
+      $('a[href="'+tab+'"]').addClass('is-active');
+      $('.mdl-layout__tab-panel').removeClass('is-active');
+      $(tab).addClass('is-active');
+
+      function changeTab(name) {
+        $(".mdl-layout__content").animate({ scrollTop: $(".page-content").height() }, "fast");
+        location.href=name;
+      }
+    </script>
+  </body>
+</html>
