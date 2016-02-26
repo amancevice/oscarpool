@@ -21,6 +21,17 @@
     });
   }
 
+  function unlock(userId) {
+    $.ajax({
+      url: "/admin/unlock",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "json",
+      data: { 'userId' : userId },
+      success: unlockCallback
+    });
+  }
+
   function admin(userId) {
     $.ajax({
       url: "/admin/promote",
@@ -58,6 +69,12 @@
   function adminCallback(json) {
     $("input#admin-"+json["unadminId"]).attr("checked", false);
     $("input#admin-"+json["adminId"]).attr("checked", true);
+  }
+
+  function unlockCallback(json) {
+    console.log(json);
+    $("input#locked-"+json["unlockId"]).attr("checked", false);
+    $("input#locked-"+json["unlockId"]).attr("disabled", true);
   }
 </script>
 
@@ -101,9 +118,10 @@
               </td>
 
               <!-- Submitted? -->
+              <% disabled = 'disabled' unless usr.locked? %>
               <td>
                 <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                  <input id="locked-<%= usr.id %>" onclick="lock(<%= usr.id %>);" type="checkbox" class="mdl-checkbox__input" <%= submitted %>>
+                  <input id="locked-<%= usr.id %>" onclick="unlock(<%= usr.id %>);" type="checkbox" class="mdl-checkbox__input" <%= submitted %> <%= disabled %>>
                 </label>
               </td>
 

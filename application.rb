@@ -194,4 +194,15 @@ class Application < Sinatra::Base
 
     params.to_json
   end
+
+  post '/admin/unlock' do
+    content_type :json
+    user = Pooler::User.find params['userId'].to_i
+    if user.locked?
+      user.update! locked:nil
+      params[:unlockId] = user.id
+    end
+
+    params.to_json
+  end
 end
