@@ -67,7 +67,12 @@
               <a href="#admin" onclick="changeTab('#admin');" class="mdl-layout__tab">Admin</a>
             <% end %>
             <a href="#picks" onclick="changeTab('#picks');" class="mdl-layout__tab">Picks</a>
-            <a href="#pay" onclick="changeTab('#pay');" class="mdl-layout__tab">Pay</a>
+            <% if @user.locked? %>
+              <a href="#leaderboard" onclick="changeTab('#leaderboard');" class="mdl-layout__tab">Leaderboard</a>
+            <% end %>
+            <% unless @user.paid? %>
+              <a href="#pay" onclick="changeTab('#pay');" class="mdl-layout__tab">Pay</a>
+            <% end %>
             <a href="#logout" onclick="changeTab('/logout');" class="mdl-layout__tab">Log Out</a>
           </div>
         <% end %>
