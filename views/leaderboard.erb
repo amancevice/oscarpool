@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <% rank = 0 %>
-          <% Pooler::User.all.sort_by{|x| [x.score, x.username] }.each do |usr| %>
+          <% Pooler::User.all.sort_by{|x| [-x.score, x.username] }.each do |usr| %>
             <tr>
               <% rank += 1%>
               <td><%= rank %></td>
